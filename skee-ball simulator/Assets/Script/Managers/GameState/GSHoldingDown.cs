@@ -11,10 +11,17 @@ public class GSHoldingDown : GameState {
     }
 
     public override void StateUpdate() {
+        //check if game is ended
+        GameManager gm = GameManager._instance;
+        if (gm.gameEnded) {
+            gm.changeState(new GSGameEnd());
+            return;
+        }
+
+        //check if player released the finger
         if (InputManager._instance.inputState == 0) {
-            GameManager gm = GameManager._instance;
             gm.shootBall(forceRate);
-            gm.changeState(new GSWaitForBallStop(gm.ball.transform, gm.ballDisaapearTime, gm.ballDisaapearTime));
+            gm.changeState(new GSWaitForBallStop(gm.ball.transform, gm.ballDisappearHeight, gm.ballDisappearTime));
             return;
         }
 
@@ -33,7 +40,7 @@ public class GSHoldingDown : GameState {
         forceRate *= forceRate;
 
         //move ball pos by input pos
-        GameManager._instance.updateBallStartPos();
+        gm.updateBallStartPos();
 
         //update UI
         UIManager._instance.updateChargingBar(forceRate);

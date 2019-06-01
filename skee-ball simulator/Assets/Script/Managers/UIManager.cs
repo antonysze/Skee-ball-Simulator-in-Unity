@@ -21,7 +21,9 @@ public class UIManager : MonoBehaviour
     [Header("Time Limit")]
     public Text timerText;
 
-    //[Header("Message")]
+    [Header("Message Window")]
+    public MessageWindow messageWindow;
+
 
 
     void Awake() {
@@ -60,5 +62,18 @@ public class UIManager : MonoBehaviour
 
     public void updateTimer(float time) {
         timerText.text = "Time Left: " + Mathf.CeilToInt(time).ToString();
+    }
+
+    public void gameEndMessage(int score, int rank) {
+        if (rank < 1) { //low score
+            messageWindow.updateText(score, rank, "Your score is low. Try again.");
+            messageWindow.showTryAgainBtn(true);
+        } else if (rank <2) {
+            messageWindow.updateText(score, rank, "Amazing! You got the highest score!");
+        } else {
+            messageWindow.updateText(score, rank, "Nice one!");
+            messageWindow.showTryAgainBtn(true);
+        }
+        messageWindow.showWindow(true);
     }
 }

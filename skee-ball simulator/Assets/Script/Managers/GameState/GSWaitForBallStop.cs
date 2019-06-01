@@ -10,18 +10,23 @@ public class GSWaitForBallStop : GameState {
         this.disappearHeight = disappearHeight;
     }
     public override void StateUpdate() {
+        //check ball disappeared
         if (ballTrans.position.y < disappearHeight) {
             stateTimer += Time.deltaTime;
         }
+
+        //game ended
+        GameManager gm = GameManager._instance;
+        if (stateTimer > 0 && gm.gameEnded) {
+            gm.changeState(new GSGameEnd());
+            return;
+        }
+
+        //ball reset
         if (Input.GetKeyDown("r") || stateTimer > timeLimit) {
             UIManager._instance.updateChargingBar(0);
-            GameManager gm = GameManager._instance;
-            if (gm.gameEnded) {
-                gm.changeState(null);
-            } else {
-                gm.resetBall();
-                gm.changeState(new GSWaitForInput());
-            }
-        }
+            gm.resetBall();
+            gm.changeState(new GSWaitForInput());
+    }
     }
 }

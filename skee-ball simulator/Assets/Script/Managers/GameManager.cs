@@ -26,14 +26,15 @@ public class GameManager : MonoBehaviour
     public Vector2 ballSizeRangeByWeight;
     public Vector2 bounsPointRange;
     public Gradient ballColorRangeByBounsPoint;
-    public float ballDisaapearTime;
+    public float ballDisappearTime;
+    public float ballDisappearHeight;
 
     // [Header("Others")]
     private Vector2 horizontalBoundOnScreen;
 
     #region game value
     
-    private int score = 0;
+    [HideInInspector] public int score = 0;
     private int currentBallBounsPoint;
     private bool ableToGetPoint;
 
@@ -65,18 +66,20 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        InputManager._instance.InputUpdateManually();
-        if (gameState != null)
-            gameState.StateUpdate();
+        InputManager._instance.InputUpdateManually(); //input update
 
+        if (gameState != null)
+            gameState.StateUpdate(); //state update
+
+        //counting down the timer
         if (gameRunning) {
             gameTimer -= Time.deltaTime;
-            if (gameTimer <= 0) {
+            if (gameTimer <= 0) { //times up!
                 gameTimer = 0;
                 gameRunning = false;
                 gameEnded = true;
             }
-            UIManager._instance.updateTimer(gameTimer);
+            UIManager._instance.updateTimer(gameTimer); //update timer ui
         }
     }
 
@@ -127,10 +130,10 @@ public class GameManager : MonoBehaviour
     public void ballIn(int scoreGain) {
         if (!ableToGetPoint) return; //prevent get score repeatly
         ableToGetPoint = false;
-        scoreGain += currentBallBounsPoint;
 
+        scoreGain += currentBallBounsPoint;
         score += scoreGain;
-        gameState.setTimer(ballDisaapearTime-0.5f);
+        gameState.setTimer(ballDisappearTime-0.5f);
         UIManager._instance.updateScore(scoreGain, score);
         Debug.Log("[Game] Ball get in: score +" + scoreGain + " | current score: " + score);
     }
