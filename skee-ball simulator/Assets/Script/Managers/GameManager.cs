@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {   
@@ -55,9 +56,7 @@ public class GameManager : MonoBehaviour
     {
         ballRigibody = ball.GetComponent<Rigidbody>();
         ballMaterial = ball.GetComponent<Renderer>().material;
-        resetBall();
-        gameTimer = gameTimeLimit;
-        changeState(new GSWaitForStart(startWaitTime));
+        gameReset();
         Camera cam = Camera.main;
         horizontalBoundOnScreen.x = cam.WorldToScreenPoint(ballStartPoint.position-new Vector3(horizontalBoundRadius,0)).x;
         horizontalBoundOnScreen.y = cam.WorldToScreenPoint(ballStartPoint.position+new Vector3(horizontalBoundRadius,0)).x;
@@ -81,6 +80,16 @@ public class GameManager : MonoBehaviour
             }
             UIManager._instance.updateTimer(gameTimer); //update timer ui
         }
+    }
+
+    public void gameReset() {
+        resetBall();
+        score = 0;
+        gameTimer = gameTimeLimit;
+        gameRunning = false;
+        gameEnded = false;
+        changeState(new GSWaitForStart(startWaitTime));
+        UIManager._instance.UIReset();
     }
 
     public void startGame() {
@@ -136,5 +145,10 @@ public class GameManager : MonoBehaviour
         gameState.setTimer(ballDisappearTime-0.5f);
         UIManager._instance.updateScore(scoreGain, score);
         Debug.Log("[Game] Ball get in: score +" + scoreGain + " | current score: " + score);
+    }
+
+    public void goBackMainMenu() {
+        UIManager._instance.showBlackOver(true);
+        SceneManager.LoadScene(0, LoadSceneMode.Single);
     }
 }

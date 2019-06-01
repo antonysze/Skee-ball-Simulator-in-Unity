@@ -23,6 +23,8 @@ public class UIManager : MonoBehaviour
 
     [Header("Message Window")]
     public MessageWindow messageWindow;
+    [Header("Other")]
+    public Animator blackOver;
 
 
 
@@ -34,8 +36,14 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         chargingBarMaxHeight = chargingBar.rectTransform.sizeDelta.y;
+        // UIReset(); //reset at GameManager
+    }
+
+    public void UIReset() {
         updateChargingBar(0);
+        scoreStore = 0;
         scoreText.text = "0";
+        updateTimerText("Ready To Start");
     }
 
     public void updateChargingBar(float rate) {
@@ -70,10 +78,15 @@ public class UIManager : MonoBehaviour
             messageWindow.showTryAgainBtn(true);
         } else if (rank <2) {
             messageWindow.updateText(score, rank, "Amazing! You got the highest score!");
+            messageWindow.showTryAgainBtn(false);
         } else {
             messageWindow.updateText(score, rank, "Nice one!");
             messageWindow.showTryAgainBtn(true);
         }
         messageWindow.showWindow(true);
+    }
+
+    public void showBlackOver(bool fadein) {
+        blackOver.Play(fadein?"TransitionCover_fadeIn":"TransitionCover_fadeOut");
     }
 }
