@@ -89,7 +89,6 @@ public class GameManager : MonoBehaviour
         gameRunning = false;
         gameEnded = false;
         changeState(new GSWaitForStart(startWaitTime));
-        UIManager._instance.UIReset();
     }
 
     public void startGame() {

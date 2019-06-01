@@ -3,7 +3,7 @@ using UnityEngine;
 public class GSGameEnd : GameState {
     public GSGameEnd() {
         int score = GameManager._instance.score;
-        int rank = RankingManager.checkRank(score);
+        int rank = RankingManager.checkRank(score, LevelManager.currentLevel);
         UIManager._instance.gameEndMessage(score,rank);
     }
 

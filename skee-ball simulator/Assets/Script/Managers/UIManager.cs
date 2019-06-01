@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         chargingBarMaxHeight = chargingBar.rectTransform.sizeDelta.y;
-        // UIReset(); //reset at GameManager
+        UIReset();
     }
 
     public void UIReset() {
